@@ -18,7 +18,8 @@ endif()
 include_directories(deps/glad/include/
                     deps/glfw/include/
                     deps/glm/
-                    deps/stb/)
+                    deps/stb/
+                    deps/json/single_include/nlohmann/)
 
 # Set bin directory
 set(BIN_DIR bin)
