@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include <glad/glad.h>
+#include <utilities/utilities.hpp>
 
 Window::Window(int width, int height, std::string name) {
     this->width = width;
@@ -33,6 +34,7 @@ void Window::InitWindow() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3); // Use OpenGL 3.3
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // Use the core profile
+    glCheckError();
 
 #ifdef __APPLE__
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
@@ -47,7 +49,6 @@ void Window::InitWindow() {
 
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, this->CallbackFrameworkSize); // Set the callback function for framebuffer size changes
-    // glfwSwapInterval(1); // Enable vsync
 
     gladLoadGL();
 
@@ -71,6 +72,7 @@ void Window::ProcessInput() {
     }
 
     glfwPollEvents();
+    glCheckError();
 }
 
 void Window::Render() {
@@ -97,6 +99,7 @@ void Window::CallbackFrameworkSize(GLFWwindow* window, int width, int height) {
     // make sure the viewport matches the new window dimensions; note that width and 
     // height will be significantly larger than specified on retina displays.
     glViewport(0, 0, width, height);
+    glCheckError();
 }
 
 /**
