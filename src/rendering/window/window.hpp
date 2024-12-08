@@ -5,6 +5,9 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+#include <shader/shader.hpp>
+#include <rendering/window/VAO/VAO.hpp>
+
 class Window {
     private:
         GLFWwindow* window;
@@ -28,5 +31,5 @@ class Window {
 
         bool ShouldClose() { return glfwWindowShouldClose(window); }
         void ProcessInput();
-        void Render(GLuint shaderProgram, GLuint VAO);
+        void Render(Shader shaderProgram, VAO VAO);
 };

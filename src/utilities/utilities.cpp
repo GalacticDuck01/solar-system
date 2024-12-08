@@ -10,7 +10,7 @@
  * \param filename The name of the file to read.
  * \return A pointer to the contents of the file or nullptr if the file does not exist.
  */
-char* readFile(const std::string& filename) {
+char* ReadFile(const std::string& filename) {
     // Check if file exists
     std::ifstream f(filename);
     if (!f.good()) {
