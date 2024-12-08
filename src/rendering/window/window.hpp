@@ -31,5 +31,5 @@ class Window {
 
         bool ShouldClose() { return glfwWindowShouldClose(window); }
         void ProcessInput();
-        void Render(Shader shaderProgram, VAO VAO);
+        void Render(Shader& shaderProgram, VAO& VAO);
 };
