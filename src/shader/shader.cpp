@@ -24,24 +24,14 @@ Shader::Shader(const char* vertexFilePath, const char* fragmentFilePath) {
     glShaderSource(vertexShader, 1, &vertexSource, NULL);
     glCompileShader(vertexShader);
 
-    // Check vertex shader compilation
-    glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-    if (!success) {
-        glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-        std::cout << FG_RED << "OpenGL Error: " << FG_YELLOW << "SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << FG_DEFAULT << std::endl;
-    }
+    CheckForCompilationErrors(vertexShader, "VERTEX");
 
     // Create fragment shader
     GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragmentShader, 1, &fragmentSource, NULL);
     glCompileShader(fragmentShader);
 
-    // Check fragment shader compilation
-    glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-    if (!success) {
-        glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-        std::cout << FG_RED << "OpenGL Error: " << FG_YELLOW << "SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << FG_DEFAULT << std::endl;
-    }
+    CheckForCompilationErrors(fragmentShader, "FRAGMENT");
 
     // Create shader program
     programID = glCreateProgram();
@@ -49,12 +39,7 @@ Shader::Shader(const char* vertexFilePath, const char* fragmentFilePath) {
     glAttachShader(programID, fragmentShader);
     glLinkProgram(programID);
 
-    // Check shader program compilation and linking
-    glGetProgramiv(programID, GL_LINK_STATUS, &success);
-    if (!success) {
-        glGetProgramInfoLog(programID, 512, NULL, infoLog);
-        std::cout << FG_RED << "OpenGL Error: " << FG_YELLOW << "SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << FG_DEFAULT << std::endl;
-    }
+    CheckForCompilationErrors(programID, "PROGRAM");
 
     // Delete shaders
     glDeleteShader(vertexShader);
@@ -62,6 +47,25 @@ Shader::Shader(const char* vertexFilePath, const char* fragmentFilePath) {
 
     // Do a final check to see if everything went well
     glCheckError();
+}
+
+void Shader::CheckForCompilationErrors(GLuint shader, const char* type) {
+    int success;
+    char infoLog[512]; 
+    if (type != "PROGRAM") {
+        glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+        if (!success) {
+            glGetShaderInfoLog(shader, 512, NULL, infoLog);
+            std::cout << TEXT_RED << "OpenGL Error: " << TEXT_YELLOW << "SHADER::" << type << "::COMPILATION_FAILED\n" << infoLog << TEXT_RESET << std::endl;
+        }
+    }
+    else {
+        glGetProgramiv(shader, GL_LINK_STATUS, &success);
+        if (!success) {
+            glGetProgramInfoLog(shader, 512, NULL, infoLog);
+            std::cout << TEXT_RED << "OpenGL Error: " << TEXT_YELLOW << "SHADER::" << type << "::LINKING_FAILED\n" << infoLog << TEXT_RESET << std::endl;
+        }
+    }
 }
 
 void Shader::Activate() {

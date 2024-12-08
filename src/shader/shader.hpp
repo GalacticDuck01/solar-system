@@ -9,4 +9,5 @@ class Shader {
         Shader(const char* vertexFilePath, const char* fragmentFilePath);
         void Activate();
         void Delete();
+        void CheckForCompilationErrors(GLuint shader, const char* type);
 };
