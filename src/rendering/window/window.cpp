@@ -71,11 +71,13 @@ void Window::ProcessInput() {
     }
 }
 
-void Window::Render(Shader& shaderProgram, VAO& VAO) {
+void Window::Render(Shader& shaderProgram, VAO& VAO, GLuint uniformID) {
     glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
     shaderProgram.Activate();
+
+    glUniform1f(uniformID, 0.5f); // Sets the value of the uniform variable "scale"
     
     VAO.Bind();
 
