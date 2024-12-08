@@ -7,7 +7,7 @@ class Simulation {
         Window window{WIDTH, HEIGHT, "Solar System Simulation"};
     public:
         static const int WIDTH = 800;
-        static const int HEIGHT = 600;
+        static const int HEIGHT = 800;
 
         void Run();
 };
