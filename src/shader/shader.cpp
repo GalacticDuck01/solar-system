@@ -4,7 +4,6 @@
 #include <iostream>
 
 #include <utilities/utilities.hpp>
-#include <utilities/colour_output.hpp>
 
 Shader::Shader(const char* vertexFilePath, const char* fragmentFilePath) {
     // Read files and store the contents.

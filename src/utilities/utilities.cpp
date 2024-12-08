@@ -1,8 +1,7 @@
+#include <utilities/utilities.hpp>
+
 #include <fstream>
 #include <iostream>
-
-#include <utilities/utilities.hpp>
-#include <utilities/colour_output.hpp>
 
 /**
  * Reads the contents of a file and returns a pointer to it.

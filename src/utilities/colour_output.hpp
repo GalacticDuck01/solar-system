@@ -26,12 +26,3 @@ public:
         return os << "\033[" << modifier.colour << "m";
     }
 };
-
-#define TEXT_RESET      Modifier(FG_DEFAULT)
-#define TEXT_RED        Modifier(FG_RED)
-#define TEXT_GREEN      Modifier(FG_GREEN)
-#define TEXT_BLUE       Modifier(FG_BLUE)
-#define TEXT_YELLOW     Modifier(FG_YELLOW)
-#define TEXT_MAGENTA    Modifier(FG_MAGENTA)
-#define TEXT_CYAN       Modifier(FG_CYAN)
-#define TEXT_WHITE      Modifier(FG_WHITE)
