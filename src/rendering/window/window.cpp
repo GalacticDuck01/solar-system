@@ -71,17 +71,18 @@ void Window::ProcessInput() {
     }
 }
 
-void Window::Render(Shader& shaderProgram, VAO& VAO, GLuint uniformID) {
+void Window::Render(Shader& shaderProgram, VAO& VAO, GLuint uniformID, Texture texture) {
     glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
     shaderProgram.Activate();
 
     glUniform1f(uniformID, 0.5f); // Sets the value of the uniform variable "scale"
+    texture.Bind(); // Binds the texture
     
     VAO.Bind();
 
-    glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
     glfwSwapBuffers(window);
 

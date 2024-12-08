@@ -7,6 +7,7 @@
 
 #include <shader/shader.hpp>
 #include <rendering/window/VAO/VAO.hpp>
+#include <rendering/window/texture/texture.hpp>
 
 class Window {
     private:
@@ -31,5 +32,5 @@ class Window {
 
         bool ShouldClose() { return glfwWindowShouldClose(window); }
         void ProcessInput();
-        void Render(Shader& shaderProgram, VAO& VAO, GLuint uniformID);
+        void Render(Shader& shaderProgram, VAO& VAO, GLuint uniformID, Texture texture);
 };
