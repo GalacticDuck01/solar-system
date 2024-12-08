@@ -10,7 +10,7 @@
  * \param filename The name of the file to read.
  * \return A pointer to the contents of the file or nullptr if the file does not exist.
  */
-char* ReadFile(const std::string& filename) {
+std::string ReadFile(const std::string& filename) {
     // Check if file exists
     std::ifstream f(filename);
     if (!f.good()) {
@@ -18,14 +18,13 @@ char* ReadFile(const std::string& filename) {
         return nullptr;
     }
 
-    char* buffer = nullptr;
-    std::ifstream file(filename, std::ios::binary | std::ios::ate);
-    std::streamsize size = file.tellg();
-    file.seekg(0, std::ios::beg);
-    buffer = new char[size];
-    file.read(buffer, size);
-    file.close();
-    return buffer;
+    std::string contents;
+    f.seekg(0, std::ios::end);
+    contents.resize(f.tellg());
+    f.seekg(0, std::ios::beg);
+    f.read(&contents[0], contents.size());
+    f.close();
+    return contents;
 }
 
 /**

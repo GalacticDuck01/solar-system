@@ -1,11 +1,13 @@
 #include <shader/shader.hpp>
 
+#include <string>
+
 #include <utilities/utilities.hpp>
 
 Shader::Shader(const char* vertexFilePath, const char* fragmentFilePath) {
     // 1. retrieve the vertex/fragment source code from filePath
-    const char* vertexCode = ReadFile(vertexFilePath);
-    const char* fragmentCode = ReadFile(fragmentFilePath);
+    const char* vertexCode = ReadFile(vertexFilePath).c_str();
+    const char* fragmentCode = ReadFile(fragmentFilePath).c_str();
 
     // 2. compile shaders
     GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
