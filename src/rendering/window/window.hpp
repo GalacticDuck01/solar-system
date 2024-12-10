@@ -32,5 +32,5 @@ class Window {
 
         bool ShouldClose() { return glfwWindowShouldClose(window); }
         void ProcessInput();
-        void Render(Shader& shaderProgram, VAO& VAO, GLuint uniformID, Texture texture);
+        void Render(GLuint* indices, int numIndices, Shader& shaderProgram, VAO& VAO, GLuint uniformID, Texture& texture);
 };

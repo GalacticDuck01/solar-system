@@ -10,8 +10,13 @@ out vec2 texCoord;
 // Define a scale for the triangle
 uniform float scale;
 
+// Define model, view and projection matrices
+uniform mat4 model;
+uniform mat4 view;
+uniform mat4 projection;
+
 void main() {
-   gl_Position = vec4(aPos.x*(1 + scale), aPos.y*(1 + scale), aPos.z*(1 + scale), 1.0);
+   gl_Position = projection*view*model*vec4(aPos, 1.0);
    colour = aColour;
    texCoord = aTexture;
 }

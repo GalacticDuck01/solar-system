@@ -9,18 +9,7 @@
 #include <shader/shader.hpp>
 #include <utilities/utilities.hpp>
 
-GLfloat vertices[] = {
-    // x, y, z, r, g, b, texture u, texture v
-    -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, // Lower left
-    -0.5f,  0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, // Upper left
-     0.5f,  0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, // Upper right
-     0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f  // Lower right
-};
-
-GLuint indices[] = {
-    0, 2, 1, // Upper triangle
-    0, 3, 2 // Lower triangle
-};
+#include <iostream>
 
 /**
  * @brief Runs the main loop for the simulation.
@@ -30,6 +19,24 @@ GLuint indices[] = {
  */
 void Simulation::Run() {
     Shader shaderProgram("C:/Users/samru/Desktop/code/solar-system/shaders/default.vert", "C:/Users/samru/Desktop/code/solar-system/shaders/default.frag");
+
+    GLfloat vertices[] = {
+        // x, y, z, r, g, b, texture u, texture v
+        -0.5f, 0.0f,  0.5f,     0.83f, 0.70f, 0.44f,	0.0f, 0.0f,
+        -0.5f, 0.0f, -0.5f,     0.83f, 0.70f, 0.44f,	5.0f, 0.0f,
+        0.5f, 0.0f, -0.5f,     0.83f, 0.70f, 0.44f,	0.0f, 0.0f,
+        0.5f, 0.0f,  0.5f,     0.83f, 0.70f, 0.44f,	5.0f, 0.0f,
+        0.0f, 0.8f,  0.0f,     0.92f, 0.86f, 0.76f,	2.5f, 5.0f
+    };
+
+    GLuint indices[] = {
+        0, 1, 2,
+        0, 2, 3,
+        0, 1, 4,
+        1, 2, 4,
+        2, 3, 4,
+        3, 0, 4
+    };
 
     VAO VAO;
     VAO.Bind();
@@ -48,19 +55,19 @@ void Simulation::Run() {
 
     GLuint uniformID = glGetUniformLocation(shaderProgram.programID, "scale"); // Gets the id of the uniform "scale"
 
-    Texture pop_cat("C:/Users/samru/Desktop/code/solar-system/resources/textures/pop_cat.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
-    pop_cat.TexUnit(shaderProgram, "tex0", 0);
+    Texture brick("C:/Users/samru/Desktop/code/solar-system/resources/textures/brick.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
+    brick.TexUnit(shaderProgram, "tex0", 0);
 
     // Main loop
     while (!window.ShouldClose()) {
         window.ProcessInput();
 
-        window.Render(shaderProgram, VAO, uniformID, pop_cat);
+        window.Render(indices, sizeof(indices)/sizeof(GLuint), shaderProgram, VAO, uniformID, brick);
     }
 
     VAO.Delete();
     VBO.Delete();
     EBO.Delete();
-    pop_cat.Delete();
+    brick.Delete();
     shaderProgram.Delete();
 }
