@@ -15,6 +15,10 @@ else()
     endif()
 endif()
 
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
+endif()
+
 include_directories(deps/glad/include/
                     deps/glfw/include/
                     deps/glm/
