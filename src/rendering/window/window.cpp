@@ -66,42 +66,14 @@ void Window::InitWindow() {
     glCheckError();
 }
 
-
-/**
- * @brief Processes input for the window.
- *
- * This function checks for key presses and performs actions accordingly.
- * Specifically, it checks if the ESCAPE key is pressed and sets the window
- * to close if it is.
- */
-void Window::ProcessInput() {
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-        glfwSetWindowShouldClose(window, true);
-    }
-}
-
-void Window::Render(GLuint* indices, int numIndices, Shader& shaderProgram, VAO& VAO, GLuint uniformID, Texture& texture) {
+void Window::Render(Camera& camera, int numIndices, Shader& shader, VAO& VAO, Texture& texture) {
     glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    shaderProgram.Activate();
+    shader.Activate();
 
-    glm::mat4 model = glm::mat4(1.0f); // Identity matrix
-    glm::mat4 view = glm::mat4(1.0f); // Identity matrix
-    glm::mat4 projection = glm::mat4(1.0f); // Identity matrix
+    camera.UpdateMatrix(45.0f, 0.1f, 100.0f, shader, "camMatrix");
 
-    model = glm::rotate(model, glm::radians(55.0f), glm::vec3(0.0f, 1.0f, 0.0f)); // Rotate the model
-    view = glm::translate(view, glm::vec3(0.0f, -0.5f, -2.0f)); // Move the camera back
-    projection = glm::perspective(glm::radians(45.0f), (float)(width/height), 0.1f, 100.0f); // Set the projection matrix
-
-    int modelLoc = glGetUniformLocation(shaderProgram.programID, "model");
-    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-    int viewLoc = glGetUniformLocation(shaderProgram.programID, "view");
-    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-    int projLoc = glGetUniformLocation(shaderProgram.programID, "projection");
-    glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
-
-    glUniform1f(uniformID, 0.5f); // Sets the value of the uniform variable "scale"
     texture.Bind(); // Binds the texture
     
     VAO.Bind();

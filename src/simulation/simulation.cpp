@@ -8,6 +8,7 @@
 #include <rendering/window/EBO/EBO.hpp>
 #include <shader/shader.hpp>
 #include <utilities/utilities.hpp>
+#include <camera/camera.hpp>
 
 #include <iostream>
 
@@ -58,11 +59,13 @@ void Simulation::Run() {
     Texture brick("C:/Users/samru/Desktop/code/solar-system/resources/textures/brick.png", GL_TEXTURE_2D, GL_TEXTURE0, GL_RGBA, GL_UNSIGNED_BYTE);
     brick.TexUnit(shaderProgram, "tex0", 0);
 
+    Camera camera(window.width, window.height, glm::vec3(0.0f, 0.0f, 2.0f));
+
     // Main loop
     while (!window.ShouldClose()) {
-        window.ProcessInput();
+        camera.HandleInputs(window.window);
 
-        window.Render(indices, sizeof(indices)/sizeof(GLuint), shaderProgram, VAO, uniformID, brick);
+        window.Render(camera, sizeof(indices)/sizeof(GLuint), shaderProgram, VAO, brick);
     }
 
     VAO.Delete();

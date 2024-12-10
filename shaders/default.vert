@@ -7,16 +7,10 @@ layout (location = 2) in vec2 aTexture;
 out vec3 colour;
 out vec2 texCoord;
 
-// Define a scale for the triangle
-uniform float scale;
-
-// Define model, view and projection matrices
-uniform mat4 model;
-uniform mat4 view;
-uniform mat4 projection;
+uniform mat4 camMatrix;
 
 void main() {
-   gl_Position = projection*view*model*vec4(aPos, 1.0);
+   gl_Position = camMatrix*vec4(aPos, 1.0);
    colour = aColour;
    texCoord = aTexture;
 }

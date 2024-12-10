@@ -8,12 +8,10 @@
 #include <shader/shader.hpp>
 #include <rendering/window/VAO/VAO.hpp>
 #include <rendering/window/texture/texture.hpp>
+#include <camera/camera.hpp>
 
 class Window {
     private:
-        GLFWwindow* window;
-        int width;
-        int height;
         std::string name;
 
         void InitWindow();
@@ -22,6 +20,9 @@ class Window {
         static void CallbackFrameworkSize(GLFWwindow* window, int width, int height);
 
     public:
+        GLFWwindow* window;
+        int width;
+        int height;
         bool hasCursorEntered = false;
 
         Window(int width, int height, std::string name);
@@ -31,6 +32,5 @@ class Window {
         Window& operator=(const Window&) = delete;
 
         bool ShouldClose() { return glfwWindowShouldClose(window); }
-        void ProcessInput();
-        void Render(GLuint* indices, int numIndices, Shader& shaderProgram, VAO& VAO, GLuint uniformID, Texture& texture);
+        void Render(Camera& camera, int numIndices, Shader& shader, VAO& VAO, Texture& texture);
 };
