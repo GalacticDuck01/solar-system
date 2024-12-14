@@ -1,6 +1,7 @@
 #include <rendering/window/window.hpp>
 
 #include <iostream>
+#include <tuple>
 
 #include <glad/glad.h>
 #include <glm/glm.hpp>
@@ -66,20 +67,23 @@ void Window::InitWindow() {
     glCheckError();
 }
 
-void Window::Render(Camera& camera, int numIndices, Shader& shader, VAO& VAO, Texture& texture) {
+void Window::Render(Camera& camera, int numPyramidIndices, Shader& pyramidShader, VAO& pyramidVAO, Texture& pyramidTexture, int numLightIndices, Shader& lightShader, VAO& lightVAO) {
     glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    shader.Activate();
+    camera.UpdateMatrix(45.0f, 0.1f, 100.0f);
 
-    camera.UpdateMatrix(45.0f, 0.1f, 100.0f, shader, "camMatrix");
+    pyramidShader.Activate();
+    glUniform3f(glGetUniformLocation(pyramidShader.programID, "camPos"), camera.position.x, camera.position.y, camera.position.z);
+    camera.Matrix(pyramidShader, "camMatrix");
+    pyramidTexture.Bind();
+    pyramidVAO.Bind();
+    glDrawElements(GL_TRIANGLES, numPyramidIndices, GL_UNSIGNED_INT, 0);
 
-    texture.Bind(); // Binds the texture
-    
-    VAO.Bind();
-
-    glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, 0);
-    glCheckError();
+    lightShader.Activate();
+    camera.Matrix(lightShader, "camMatrix");
+    lightVAO.Bind();
+    glDrawElements(GL_TRIANGLES, numLightIndices, GL_UNSIGNED_INT, 0);
 
     glfwSwapBuffers(window);
 
