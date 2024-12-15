@@ -5,10 +5,8 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include <shader/shader.hpp>
-#include <rendering/window/VAO/VAO.hpp>
-#include <rendering/window/texture/texture.hpp>
 #include <camera/camera.hpp>
+#include <rendering/window/mesh/mesh.hpp>
 
 class Window {
     private:
@@ -32,5 +30,5 @@ class Window {
         Window& operator=(const Window&) = delete;
 
         bool ShouldClose() { return glfwWindowShouldClose(window); }
-        void Render(Camera& camera, int planksIndices, Shader& planksShader, VAO& planksVAO, Texture& planksTexture, Texture& specular, int numLightIndices, Shader& lightShader, VAO& lightVAO);
+        void Render(Camera& camera, Mesh& floor, Shader& floorShader, Mesh& light, Shader& lightShader);
 };

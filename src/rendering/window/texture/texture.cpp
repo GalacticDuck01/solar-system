@@ -7,7 +7,7 @@
 #include <fstream>
 #include <iostream>
 
-Texture::Texture(const char* image, GLenum texType, GLuint slot, GLenum format, GLenum pixelType) {
+Texture::Texture(const char* image, TextureType textureType, GLuint slot, GLenum format, GLenum pixelType) {
     // Check image path exists
     std::ifstream f(image);
     if (!f.good()) {
@@ -15,7 +15,7 @@ Texture::Texture(const char* image, GLenum texType, GLuint slot, GLenum format, 
         return;
     }
     
-    type = texType;
+    type = textureType;
     int textureWidth, textureHeight, numColourChannels;
     stbi_set_flip_vertically_on_load(true);
     unsigned char* bytes = stbi_load(image, &textureWidth, &textureHeight, &numColourChannels, 0);
@@ -23,21 +23,21 @@ Texture::Texture(const char* image, GLenum texType, GLuint slot, GLenum format, 
     glGenTextures(1, &id);
     glActiveTexture(GL_TEXTURE0 + slot);
     unit = slot;
-    glBindTexture(texType, id);
-    glTexParameteri(texType, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(texType, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glBindTexture(GL_TEXTURE_2D, id);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glCheckError();
 
-    glTexParameteri(texType, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(texType, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glCheckError();
 
-    glTexImage2D(texType, 0, GL_RGBA, textureWidth, textureHeight, 0, format, pixelType, bytes);
-    glGenerateMipmap(texType);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureWidth, textureHeight, 0, format, pixelType, bytes);
+    glGenerateMipmap(GL_TEXTURE_2D);
     glCheckError();
 
     stbi_image_free(bytes);
-    glBindTexture(texType, 0);
+    glBindTexture(GL_TEXTURE_2D, 0);
     glCheckError();
 }
 
@@ -50,11 +50,11 @@ void Texture::TexUnit(Shader& shader, const char* uniform, GLuint unit) {
 
 void Texture::Bind() {
     glActiveTexture(GL_TEXTURE0 + unit);
-    glBindTexture(type, id);
+    glBindTexture(GL_TEXTURE_2D, id);
 }
 
 void Texture::Unbind() {
-    glBindTexture(type, 0);
+    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void Texture::Delete() {
