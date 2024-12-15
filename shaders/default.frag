@@ -8,21 +8,71 @@ in vec3 currentPos;
 out vec4 FragColour;
 
 uniform sampler2D tex0;
+uniform sampler2D tex1;
 uniform vec4 lightColour;
 uniform vec3 lightPos;
 uniform vec3 camPos;
 
-void main() {
+vec4 PointLight() {
+    vec3 lightVector = lightPos - currentPos;
+    float dist = length(lightVector);
+    float a = 0.05;
+    float b = 0.01;
+    float intensity = 1.0/(a*dist*dist + b*dist + 1.0);
+
     float ambient = 0.2;
 
     vec3 unitNormal = normalize(normal);
-    vec3 lightDirection = normalize(lightPos - currentPos);
+    vec3 lightDirection = normalize(lightVector);
     float diffuse = max(dot(unitNormal, lightDirection), 0.0);
     float specularLight = 0.5;
     vec3 viewDirection = normalize(camPos - currentPos);
     vec3 reflectDirection = reflect(-lightDirection, unitNormal);
-    float specularAmount = pow(max(dot(viewDirection, reflectDirection), 0.0), 8.0);
+    float specularAmount = pow(max(dot(viewDirection, reflectDirection), 0.0), 32.0);
     float specular = specularAmount*specularLight;
 
-    FragColour = lightColour*(diffuse + ambient + specular)*texture(tex0, texCoord);
+    return lightColour*((intensity*diffuse + ambient)*texture(tex0, texCoord) + intensity*specular*texture(tex1, texCoord).r);
+}
+
+vec4 DirectionalLight() {
+    float ambient = 0.2;
+
+    vec3 unitNormal = normalize(normal);
+    vec3 lightDirection = normalize(vec3(1.0, 1.0, 0.0));
+    float diffuse = max(dot(unitNormal, lightDirection), 0.0);
+    float specularLight = 0.5;
+    vec3 viewDirection = normalize(camPos - currentPos);
+    vec3 reflectDirection = reflect(-lightDirection, unitNormal);
+    float specularAmount = pow(max(dot(viewDirection, reflectDirection), 0.0), 32.0);
+    float specular = specularAmount*specularLight;
+
+    return lightColour*((diffuse + ambient)*texture(tex0, texCoord) + specular*texture(tex1, texCoord).r);
+}
+
+vec4 SpotLight() {
+    vec3 lightVector = lightPos - currentPos;
+
+    // cos(angle)s for two cones that create a soft spotlight
+    float outerCone = 0.90;
+    float innerCone = 0.95;
+
+    float ambient = 0.2;
+
+    vec3 unitNormal = normalize(normal);
+    vec3 lightDirection = normalize(lightVector);
+    float diffuse = max(dot(unitNormal, lightDirection), 0.0);
+    float specularLight = 0.5;
+    vec3 viewDirection = normalize(camPos - currentPos);
+    vec3 reflectDirection = reflect(-lightDirection, unitNormal);
+    float specularAmount = pow(max(dot(viewDirection, reflectDirection), 0.0), 32.0);
+    float specular = specularAmount*specularLight;
+
+    float angle = dot(vec3(0.0, -1.0, 0.0), -lightDirection);
+    float intensity = clamp((angle - outerCone)/(innerCone - outerCone), 0.0, 1.0);
+
+    return lightColour*((intensity*diffuse + ambient)*texture(tex0, texCoord) + intensity*specular*texture(tex1, texCoord).r);
+}
+
+void main() {
+    FragColour = SpotLight();
 }

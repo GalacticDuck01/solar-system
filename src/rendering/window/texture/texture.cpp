@@ -21,7 +21,8 @@ Texture::Texture(const char* image, GLenum texType, GLuint slot, GLenum format, 
     unsigned char* bytes = stbi_load(image, &textureWidth, &textureHeight, &numColourChannels, 0);
 
     glGenTextures(1, &id);
-    glActiveTexture(slot);
+    glActiveTexture(GL_TEXTURE0 + slot);
+    unit = slot;
     glBindTexture(texType, id);
     glTexParameteri(texType, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(texType, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -48,6 +49,7 @@ void Texture::TexUnit(Shader& shader, const char* uniform, GLuint unit) {
 }
 
 void Texture::Bind() {
+    glActiveTexture(GL_TEXTURE0 + unit);
     glBindTexture(type, id);
 }
 

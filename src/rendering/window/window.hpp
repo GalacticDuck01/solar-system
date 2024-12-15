@@ -32,5 +32,5 @@ class Window {
         Window& operator=(const Window&) = delete;
 
         bool ShouldClose() { return glfwWindowShouldClose(window); }
-        void Render(Camera& camera, int numPyramidIndices, Shader& pyramidShader, VAO& pyramidVAO, Texture& pyramidTexture, int numLightIndices, Shader& lightShader, VAO& lightVAO);
+        void Render(Camera& camera, int planksIndices, Shader& planksShader, VAO& planksVAO, Texture& planksTexture, Texture& specular, int numLightIndices, Shader& lightShader, VAO& lightVAO);
 };
