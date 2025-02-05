@@ -32,6 +32,7 @@ compile_commands.json
 *.o
 *.os
 *.so
+*.dll
 *.obj
 *.bc
 *.pyc
