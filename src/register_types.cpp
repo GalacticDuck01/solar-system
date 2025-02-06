@@ -4,7 +4,7 @@
 #include <godot_cpp/core/defs.hpp>
 #include <godot_cpp/godot.hpp>
 
-#include <Icosphere/Icosphere.hpp>
+#include "Icosphere/Icosphere.hpp"
 
 using namespace godot;
 
