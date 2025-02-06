@@ -37,8 +37,6 @@ env = SConscript("godot-cpp/SConstruct", {"env": env, "customs": customs})
 
 cpp_dirs = []
 for src, dirs, files in os.walk("src"):
-    print(f"src = {src}")
-    print(f"dirs = {dirs}")
     for dir in dirs:
         if dir != "gen":
             cpp_dirs.append(src + "/" + dir + "/")
