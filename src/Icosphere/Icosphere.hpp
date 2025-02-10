@@ -14,7 +14,6 @@ class Icosphere : public MeshInstance3D {
 private:
     int resolution;
     std::vector<Vector3> vertices;
-    std::unordered_map<int, int> midpoints;
 
     void GenerateIcosphere();
     int CreateNewMidpoint(int v1, int v2);

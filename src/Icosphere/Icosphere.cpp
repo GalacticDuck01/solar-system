@@ -19,7 +19,6 @@ void Icosphere::GenerateIcosphere() {
     };
 
     vertices.clear();
-    midpoints.clear();
 
     // Create the icosphere, very nicely sourced from http://blog.andreaskahler.com/2009/06/creating-icosphere-mesh-in-code.html
     const float t = (1.0f + sqrt(5.0f)) / 2.0f; // Golden ratio
@@ -61,18 +60,21 @@ void Icosphere::GenerateIcosphere() {
         {9, 8, 1}
     };
 
+    int i1, i2, i3, i12, i13, i23;
     for (int i = 0; i < resolution; i++) {
-        midpoints.clear();
         std::vector<TriangleIndices> newTriangles;
         for (const auto& tri : triangles) {
-            int i12 = CreateNewMidpoint(tri.i1, tri.i2);
-            int i23 = CreateNewMidpoint(tri.i2, tri.i3);
-            int i13 = CreateNewMidpoint(tri.i1, tri.i3);
+            i1 = tri.i1;
+            i2 = tri.i2;
+            i3 = tri.i3;
+            i12 = CreateNewMidpoint(i1, i2);
+            i13 = CreateNewMidpoint(i1, i3);
+            i23 = CreateNewMidpoint(i2, i3);
 
-            newTriangles.push_back({tri.i1, i12, i13});
-            newTriangles.push_back({tri.i2, i23, i12});
-            newTriangles.push_back({tri.i3, i13, i23});
-            newTriangles.push_back({i12,    i23, i13});
+            newTriangles.push_back({i1,  i12, i13});
+            newTriangles.push_back({i13, i12, i23});
+            newTriangles.push_back({i12,  i2, i23});
+            newTriangles.push_back({i13, i23, i3});
         }
         triangles = newTriangles;
     }
@@ -101,23 +103,15 @@ void Icosphere::GenerateIcosphere() {
 }
 
 int Icosphere::CreateNewMidpoint(int i1, int i2) {
-    int smallerIndex = MIN(i1, i2);
-    int greaterIndex = MAX(i1, i2);
-    int midpointKey = (smallerIndex << 32) + greaterIndex;
-
-    // Check if already calculated
-    if (midpoints.find(midpointKey) != midpoints.end()) {
-        return midpoints[midpointKey];
-    }
-
     // Not found, so calculate middle point
     Vector3 v1 = vertices[i1];
     Vector3 v2 = vertices[i2];
     Vector3 midpoint = (v1 + v2) / 2.0f;
     midpoint.normalize();
-    vertices.push_back(midpoint);
+    // Get index before adding new vertex
+    // E.g. if we add the 13th vertex (the first new one), we want to return 12
     int index = vertices.size();
-    midpoints[midpointKey] = index;
+    vertices.push_back(midpoint);
     return index;
 }
 
