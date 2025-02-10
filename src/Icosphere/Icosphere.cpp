@@ -4,6 +4,9 @@
 
 Icosphere::Icosphere() {
     resolution = 5;
+}
+
+void Icosphere::_ready() {
     GenerateIcosphere();
 }
 

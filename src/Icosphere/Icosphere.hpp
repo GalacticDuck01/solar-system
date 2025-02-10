@@ -23,6 +23,7 @@ protected:
 
 public:
     Icosphere();
+    void _ready() override;
 
     int GetResolution() { return resolution; }
     void SetResolution(int res);
