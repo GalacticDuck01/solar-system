@@ -8,11 +8,24 @@ Icosphere::Icosphere() {
 
 void Icosphere::_ready() {
     GenerateIcosphere();
+    
 }
 
 void Icosphere::GenerateIcosphere() {
-    Ref<ArrayMesh> mesh;
-    mesh.instantiate();
+    Ref<ArrayMesh> mesh = get_mesh();
+
+    Ref<Material> existingMaterial;
+
+    if (mesh.is_valid()) {
+        if (mesh->get_surface_count() > 0) existingMaterial = mesh->surface_get_material(0);
+
+        UtilityFunctions::print("Clearing mesh");
+        mesh->clear_surfaces();
+    } else {
+        UtilityFunctions::print("Initialising mesh");
+        mesh.instantiate();
+    }
+
     Ref<SurfaceTool> surfaceTool;
     surfaceTool.instantiate();
     surfaceTool->begin(Mesh::PRIMITIVE_TRIANGLES);
@@ -101,8 +114,11 @@ void Icosphere::GenerateIcosphere() {
 
     surfaceTool->commit(mesh);
 
-    // Set mesh to this MeshInstance3D
-    set_mesh(mesh);
+    // Set material
+    if (existingMaterial.is_valid()) {
+        mesh->surface_set_material(0, existingMaterial);
+    }
+
 }
 
 int Icosphere::CreateNewMidpoint(int i1, int i2) {
