@@ -5,14 +5,7 @@ Planet::Planet() : Icosphere() {
 }
 
 void Planet::_ready() {
-    print_line("Planet ready!");
     Icosphere::_ready();
-
-    if (get_mesh().is_valid()) {
-        print_line("Planet mesh is valid!");
-    } else {
-        print_line("Planet mesh is invalid!");
-    }
 }
 
 void Planet::_bind_methods() {
