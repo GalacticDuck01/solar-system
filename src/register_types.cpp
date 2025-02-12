@@ -5,6 +5,7 @@
 #include <godot_cpp/godot.hpp>
 
 #include "Icosphere/Icosphere.hpp"
+#include "Physics/Celestial Bodies/Planet/Planet.hpp"
 
 using namespace godot;
 
@@ -14,6 +15,7 @@ void initialize_gdextension_types(ModuleInitializationLevel p_level)
 		return;
 	}
 	GDREGISTER_CLASS(Icosphere);
+	GDREGISTER_CLASS(Planet);
 }
 
 void uninitialize_gdextension_types(ModuleInitializationLevel p_level) {

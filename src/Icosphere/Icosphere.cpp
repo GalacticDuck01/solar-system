@@ -119,6 +119,7 @@ void Icosphere::GenerateIcosphere() {
         mesh->surface_set_material(0, existingMaterial);
     }
 
+    set_mesh(mesh);
 }
 
 int Icosphere::CreateNewMidpoint(int i1, int i2) {
@@ -143,5 +144,5 @@ void Icosphere::_bind_methods() {
     ClassDB::bind_method(D_METHOD("GetResolution"), &Icosphere::GetResolution);
     ClassDB::bind_method(D_METHOD("SetResolution", "newResolution"), &Icosphere::SetResolution);
 
-    ADD_PROPERTY(PropertyInfo(Variant::INT, "resolution"), "SetResolution", "GetResolution");
+    ADD_PROPERTY(PropertyInfo(Variant::INT, "resolution", PROPERTY_HINT_RANGE, "0,10,1"), "SetResolution", "GetResolution");
 }
