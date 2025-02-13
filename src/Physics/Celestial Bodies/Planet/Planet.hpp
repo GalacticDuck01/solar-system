@@ -8,7 +8,7 @@ class Planet : public Icosphere {
     GDCLASS(Planet, Icosphere);
 
 private:
-    int radius;
+    float radius;
     Vector3 position;
     Vector3 velocity;
 
@@ -19,8 +19,8 @@ public:
     Planet();
     void _ready() override;
 
-    int GetRadius() { return radius; }
-    void SetRadius(int newRadius) { radius = newRadius; }
+    float GetRadius() { return radius; }
+    void SetRadius(int newRadius) { radius = newRadius; set_scale(Vector3(radius, radius, radius)); }
     Vector3 GetPosition() { return position; }
     void SetPosition(Vector3 newPosition) { position = newPosition; }
     Vector3 GetVelocity() { return velocity; }
