@@ -2,13 +2,11 @@
 
 #include <godot_cpp/core/class_db.hpp>
 
-Icosphere::Icosphere() {
-    resolution = 5;
-}
+Icosphere::Icosphere() {}
 
 void Icosphere::_ready() {
+    resolution = 5;
     GenerateIcosphere();
-    
 }
 
 void Icosphere::GenerateIcosphere() {
